@@ -19,7 +19,9 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
+      - add_ssh_keys:
+          fingerprints:
+            - "1a:70:8a:94:68:e8:c5:7f:98:d0:34:b5:08:a1:90:e9"
       - run: git config --global user.name $GITHUB_NAME
       - run: git config --global user.email $GITHUB_EMAIL
 
