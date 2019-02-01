@@ -26,4 +26,10 @@ jobs:
       - run:
           name: Deploy development branch to master
           command: |
+              cd dist
+              git init
+              git config --local user.name $GITHUB_NAME
+              git config --local user.email ""
+              git add -A
+              git commit -m 'deploy'
               git push -f git@github.com:osanpozuki/first-vue-deploy.git master:gh-pages
