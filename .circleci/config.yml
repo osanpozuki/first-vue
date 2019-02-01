@@ -25,7 +25,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - build: npm serve build
+      - run: npm serve build
 
       - run:
           name: Deploy development branch to master
