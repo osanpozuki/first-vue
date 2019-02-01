@@ -20,16 +20,14 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      - run: git config user.name $GITHUB_NAME
-      - run: git config user.email ""
+      - run: git config --global user.name $GITHUB_NAME
+      - run: git config --global user.email ""
 
       - run:
           name: Deploy development branch to master
           command: |
               cd dist
               git init
-              git config --global user.name $GITHUB_NAME
-              git config --global user.email ""
               git add -A
               git commit -m 'deploy'
               git push -f git@github.com:osanpozuki/first-vue-deploy.git master:gh-pages
