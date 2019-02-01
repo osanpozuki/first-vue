@@ -1,8 +1,38 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
   build:
-    docker: # See https://docs.docker.com/get-started/#docker-concepts if you are new to Docker.
-      - image: circleci/ruby:2.4.1
+    docker:
+      - image: circleci/node:10.15-jessie-browsers-legacy
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
     steps:
       - checkout
-      - run: echo "A first hello"
+
+      - restore_cache:
+          keys:
+	    - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}
+            - yarn-packages-master
+            - yarn-packages-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - build: npm serve build
+
+      - run:|
+      	chmod +x deploy.sh
+        ./deploy.sh
