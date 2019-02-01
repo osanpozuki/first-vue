@@ -3,6 +3,7 @@
 # abort on errors
 set -e
 
+docker-compose -f docker-compose.yml up
 # navigate into the build output directory
 cd dist
 
@@ -16,3 +17,5 @@ git commit -m 'deploy'
 git push -f git@github.com.sub:osanpozuki/first-vue-deploy.git master:gh-pages
 
 cd -
+
+echo "https://osanpozuki.github.io/first-vue-deploy/"
