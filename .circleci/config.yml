@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15-jessie-browsers-legacy
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run: npm install
+      - run: npm run build
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: git config --global user.name $GITHUB_NAME
+      - run: git config --global user.email $GITHUB_EMAIL
+
+      - run:
+          name: Deploy development branch to master
+          command: |
+              cd dist
+              git init
+              git add -A
+              git commit -m 'deploy'
+              git push -f git@github.com:osanpozuki/first-vue-deploy.git master:gh-pages
